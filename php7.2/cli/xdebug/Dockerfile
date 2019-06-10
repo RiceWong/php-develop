@@ -16,6 +16,7 @@ xdebug.profiler_enable_trigger = 1 '>> $PHP_INI_DIR/conf.d/docker-php-ext-xdebug
 
 COPY ./entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
-
+WORKDIR /var/www/
 ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/bin/bash"]
 EXPOSE 10001
