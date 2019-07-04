@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM php:7.2-fpm-stretch
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone
@@ -64,7 +64,8 @@ RUN sed -i '\
 
 RUN apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/src/*
 
 COPY ./php.ini $PHP_INI_DIR/
 

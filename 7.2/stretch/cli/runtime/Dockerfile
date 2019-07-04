@@ -1,4 +1,4 @@
-FROM php:7.1-fpm-stretch
+FROM php:7.2-cli-stretch
 
 RUN /bin/cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo 'Asia/Shanghai' > /etc/timezone
@@ -41,34 +41,15 @@ RUN apt-get clean all \
     && docker-php-ext-install sysvshm \
     && docker-php-ext-install opcache
 
-RUN curl -sS https://getcomposer.org/installer | php \
-    && mv composer.phar /usr/local/bin/composer \
-    && composer self-update --clean-backups
-
 RUN cd /tmp/ \
     && git clone -b '3.1.6' https://github.com/phpredis/phpredis.git redis-3.1.6 \
     && ( cd redis-3.1.6 && phpize && ./configure && make && make install && cd ..) \
     && rm -r redis-3.1.6 \
     && docker-php-ext-enable redis
 
-ENV PHPFPM_INI_DIR=/usr/local/etc/php-fpm.d
-
-RUN sed -i '\
-    s/user = www-data/user = root/;\
-    s/group = www-data/group = root/;\
-    s/pm.max_children = 5/pm.max_children = 200/g;\
-    s/pm.start_servers = 2/pm.start_servers = 20/g;\
-    s/pm.min_spare_servers = 1/pm.min_spare_servers = 20/g;\
-    s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/g;\
-    ' $PHPFPM_INI_DIR/www.conf
+COPY ./php.ini $PHP_INI_DIR/
 
 RUN apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY ./php.ini $PHP_INI_DIR/
-
-STOPSIGNAL SIGQUIT
-
-EXPOSE 9000
-CMD ["/usr/local/sbin/php-fpm", "-R"]
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/src/*

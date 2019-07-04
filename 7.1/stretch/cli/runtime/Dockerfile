@@ -51,4 +51,5 @@ COPY ./php.ini $PHP_INI_DIR/
 
 RUN apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/src/*

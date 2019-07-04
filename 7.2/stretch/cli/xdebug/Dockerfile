@@ -1,4 +1,4 @@
-FROM rickywong/php:7.1-stretch-fpm
+FROM rickywong/php:7.2-stretch-cli
 
 ENV DBGP_URL=http://downloads.activestate.com/Komodo/releases/11.1.0/remotedebugging/Komodo-PythonRemoteDebugging-11.1.0-91033-linux-x86_64.tar.gz
 RUN apt-get update \
@@ -28,8 +28,6 @@ RUN cd /usr/src \
 RUN apt-get clean \
         && apt-get autoremove \
         && rm -rf /var/lib/apt/lists/*
-# 修改fpm配置项
-
 
 COPY entrypoint.sh /entrypoint.sh
 
@@ -37,7 +35,7 @@ WORKDIR /var/www/
 
 ENTRYPOINT ["/entrypoint.sh"]
 
-CMD ["/usr/local/sbin/php-fpm", "-R"]
+CMD ["/bin/bash"]
 
 EXPOSE 9000
 EXPOSE 10001

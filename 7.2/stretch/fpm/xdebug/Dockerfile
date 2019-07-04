@@ -1,4 +1,4 @@
-FROM rickywong/php:7.1-stretch-fpm
+FROM rickywong/php:7.2-stretch-fpm
 
 ENV DBGP_URL=http://downloads.activestate.com/Komodo/releases/11.1.0/remotedebugging/Komodo-PythonRemoteDebugging-11.1.0-91033-linux-x86_64.tar.gz
 RUN apt-get update \
