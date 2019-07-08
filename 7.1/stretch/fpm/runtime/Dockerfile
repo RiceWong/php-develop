@@ -62,11 +62,12 @@ RUN sed -i '\
     s/pm.max_spare_servers = 3/pm.max_spare_servers = 200/g;\
     ' $PHPFPM_INI_DIR/www.conf
 
+COPY ./php.ini $PHP_INI_DIR/
+
 RUN apt-get clean \
     && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY ./php.ini $PHP_INI_DIR/
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /usr/src/*
 
 STOPSIGNAL SIGQUIT
 
